@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Squad Map Manager WebUI</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Squad Map Manager v3.1</p>
+        <h1 data-i18n="mainTitle">地图预设GUI管理器</h1>
+      </div>
+      <div class="topbar-actions">
+        <span class="author-badge">
+          <span data-i18n="author">作者</span>
+          <span id="authorName">: [POST] MirageStar</span>
+        </span>
+        <label class="language-control" for="languageSelect">
+          <span data-i18n="language">语言</span>
+          <select id="languageSelect"></select>
+        </label>
+        <button class="ghost-button" id="resetCommandButton" type="button">
+          <span aria-hidden="true">↺</span>
+          <span data-i18n="reset">重置</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="sidebar">
+        <nav class="view-tabs" aria-label="功能" data-i18n-attr="aria-label:operation">
+          <button class="tab-button is-active" type="button" data-view="command" data-i18n="commandView">编辑代码</button>
+          <button class="tab-button" type="button" data-view="pool" data-i18n="poolView">随机图池</button>
+        </nav>
+
+        <section class="metric-band" aria-label="数据概览" data-i18n-attr="aria-label:metrics">
+          <div>
+            <span class="metric-value" id="metricMaps">0</span>
+            <span class="metric-label" data-i18n="mapsMetric">地图</span>
+          </div>
+          <div>
+            <span class="metric-value" id="metricLayers">0</span>
+            <span class="metric-label" data-i18n="layersMetric">图层</span>
+          </div>
+          <div>
+            <span class="metric-value" id="metricFactions">0</span>
+            <span class="metric-label" data-i18n="factionsMetric">阵营</span>
+          </div>
+        </section>
+
+        <section class="filter-panel" aria-label="地图筛选" data-i18n-attr="aria-label:mapSection">
+          <div class="filter-controls">
+            <div class="section-title-row">
+              <h2 data-i18n="mapSection">地图</h2>
+              <span id="mapResultCount">0</span>
+            </div>
+            <label class="field">
+              <span data-i18n="search">搜索</span>
+              <input id="mapSearch" type="search" autocomplete="off" placeholder="Map / Layer" data-i18n-attr="placeholder:searchPlaceholder">
+            </label>
+            <label class="field">
+              <span data-i18n="ecosystem">生态</span>
+              <select id="ecosystemFilter"></select>
+            </label>
+            <label class="field">
+              <span data-i18n="type">类型</span>
+              <select id="mapTypeFilter"></select>
+            </label>
+          </div>
+          <div class="map-list" id="mapList" aria-label="地图列表" data-i18n-attr="aria-label:mapSection"></div>
+        </section>
+      </aside>
+
+      <section class="main-surface">
+        <section class="view-panel is-active" id="commandView" data-panel="command">
+          <div class="command-grid">
+            <section class="tool-section operation-section">
+              <div class="section-title-row">
+                <h2 data-i18n="operation">操作</h2>
+                <span id="selectedMapMeta"></span>
+              </div>
+              <div class="segmented" id="operationControl" role="group" aria-label="操作类型" data-i18n-attr="aria-label:operation">
+                <button class="segment is-active" type="button" data-operation="AdminSetNextLayer" data-i18n="preset">预设</button>
+                <button class="segment" type="button" data-operation="AdminChangeLayer" data-i18n="changeLayer">换图</button>
+              </div>
+            </section>
+
+            <section class="tool-section mode-section">
+              <div class="section-title-row">
+                <h2 data-i18n="mode">模式</h2>
+                <span id="modeCountLabel">0</span>
+              </div>
+              <div class="mode-list" id="modeList" aria-label="模式列表" data-i18n-attr="aria-label:mode"></div>
+            </section>
+
+            <section class="tool-section matchup-section">
+              <div class="section-title-row">
+                <h2 data-i18n="matchup">阵营与编制</h2>
+                <span id="validFactionLabel">0</span>
+              </div>
+              <label class="toggle-row">
+                <span data-i18n="allowCivilWar">允许内战</span>
+                <input id="allowCivilWarToggle" type="checkbox" checked>
+              </label>
+              <div class="matchup-grid">
+                <div class="force-column">
+                  <h3 data-i18n="force1">阵营 1</h3>
+                  <label class="field">
+                    <span data-i18n="faction">阵营</span>
+                    <select id="faction1Select"></select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="formation">编制</span>
+                    <select id="formation1Select"></select>
+                  </label>
+                </div>
+                <div class="force-column">
+                  <h3 data-i18n="force2">阵营 2</h3>
+                  <label class="field">
+                    <span data-i18n="faction">阵营</span>
+                    <select id="faction2Select"></select>
+                  </label>
+                  <label class="field">
+                    <span data-i18n="formation">编制</span>
+                    <select id="formation2Select"></select>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="tool-section result-section">
+              <div class="section-title-row">
+                <h2 data-i18n="command">命令</h2>
+                <span id="balanceLabel">平衡值 0</span>
+              </div>
+              <div class="balance-meter" aria-hidden="true">
+                <div class="balance-track">
+                  <span class="balance-fill" id="balanceFill"></span>
+                </div>
+                <div class="balance-scale">
+                  <span data-i18n="force2">阵营 2</span>
+                  <span>0</span>
+                  <span data-i18n="force1">阵营 1</span>
+                </div>
+              </div>
+              <output class="command-output" id="commandOutput"></output>
+              <div class="button-row">
+                <button class="primary-button" id="copyCommandButton" type="button">
+                  <span aria-hidden="true">⧉</span>
+                  <span data-i18n="copyCommand">复制命令</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view-panel" id="poolView" data-panel="pool">
+          <div class="pool-grid">
+            <section class="tool-section">
+              <div class="section-title-row">
+                <h2 data-i18n="poolStrategy">图池策略</h2>
+                <span id="poolCandidateCount">0</span>
+              </div>
+
+              <div class="option-group">
+                <span class="control-label" data-i18n="difficulty">难度</span>
+                <div class="check-grid" id="difficultyChecks"></div>
+              </div>
+
+              <div class="option-group">
+                <span class="control-label" data-i18n="size">大小</span>
+                <div class="check-grid" id="sizeChecks"></div>
+              </div>
+
+              <div class="option-group">
+                <span class="control-label" data-i18n="mode">模式</span>
+                <div class="check-grid mode-checks" id="modeTypeChecks"></div>
+              </div>
+
+              <div class="range-grid">
+                <label class="field">
+                  <span data-i18n="balanceThreshold">平衡阈值</span>
+                  <input id="thresholdInput" type="number" min="0" max="100" step="1">
+                </label>
+                <label class="field">
+                  <span data-i18n="generateCount">生成数量</span>
+                  <input id="poolSizeInput" type="number" min="1" max="50" step="1">
+                </label>
+              </div>
+
+              <input class="range-control" id="thresholdRange" type="range" min="0" max="100" step="1">
+
+              <div class="button-row">
+                <button class="primary-button" id="generatePoolButton" type="button">
+                  <span aria-hidden="true">⇄</span>
+                  <span data-i18n="generatePool">生成图池</span>
+                </button>
+                <button class="ghost-button" id="copyPoolButton" type="button">
+                  <span aria-hidden="true">⧉</span>
+                  <span data-i18n="copyAll">复制全部</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="tool-section pool-results-section">
+              <div class="section-title-row">
+                <h2 data-i18n="results">结果</h2>
+                <span id="poolResultCount">0</span>
+              </div>
+              <div class="pool-results" id="poolResults"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
