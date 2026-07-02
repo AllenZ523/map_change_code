@@ -10,6 +10,8 @@ const {
   defaultLocale: DEFAULT_LOCALE,
   author: AUTHOR,
   i18n: I18N,
+  mapRules: MAP_RULES,
+  factionRules: FACTION_RULES,
   labels: {
     ecosystems: ECOSYSTEM_LABELS,
     mapTypes: MAP_TYPE_LABELS,
@@ -38,7 +40,7 @@ requireConfigArray("mapSizes", MAP_SIZES);
 requireConfigArray("maps", MAPS);
 requireConfigArray("countries", COUNTRIES);
 
-const LOCALES = Object.keys(I18N || {});
+const LOCALES = I18N?.locales || [];
 const FALLBACK_LOCALE = LOCALES.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : LOCALES[0];
 
 if (!FALLBACK_LOCALE) {
@@ -111,23 +113,14 @@ const state = {
 
 let toastTimer = 0;
 
-function localeConfig() {
-  return I18N[state.locale] || I18N[FALLBACK_LOCALE];
-}
-
-function interpolate(text, values = {}) {
-  return String(text).replace(/\{(\w+)\}/g, (_, key) => (Object.hasOwn(values, key) ? values[key] : `{${key}}`));
-}
+const i18nRuntime = I18N.createRuntime(state.locale);
 
 function t(key, values = {}) {
-  const config = localeConfig();
-  const text = config.ui?.[key] ?? I18N[FALLBACK_LOCALE]?.ui?.[key] ?? key;
-  return interpolate(text, values);
+  return i18nRuntime.t(key, values);
 }
 
 function labelFrom(group, key) {
-  const config = localeConfig();
-  return config[group]?.[key] ?? I18N[FALLBACK_LOCALE]?.[group]?.[key] ?? key;
+  return i18nRuntime.labelFrom(group, key);
 }
 
 function mapLabel(map) {
@@ -139,7 +132,7 @@ function modeTypeLabel(value) {
 }
 
 function applyLocale() {
-  const config = localeConfig();
+  const config = i18nRuntime.config;
   document.documentElement.lang = state.locale;
   document.title = config.appTitle || t("mainTitle");
 
@@ -173,34 +166,16 @@ function getModeByName(map, modeName) {
   return map.modes.find((item) => item.modeName === modeName) || map.modes[0];
 }
 
-function canOperateOnMapType(factionItem, mapType) {
-  return !factionItem.amphibiousOnly || mapType === "LargeAmphibious";
-}
-
-function canOperateInEcosystem(factionItem, ecosystem) {
-  return factionItem.ecosystems.includes(ecosystem);
-}
-
 function canAlliancesFight(alliance1, alliance2) {
-  if (alliance1 === "Independent" || alliance2 === "Independent") {
-    return true;
-  }
-  return state.allowCivilWar || alliance1 !== alliance2;
+  return FACTION_RULES.canAlliancesFight(alliance1, alliance2, { allowCivilWar: state.allowCivilWar });
 }
 
 function getValidFactions(map) {
-  return COUNTRIES.filter((item) => canOperateInEcosystem(item, map.ecosystem) && canOperateOnMapType(item, map.mapType));
+  return FACTION_RULES.getValidFactions(COUNTRIES, map);
 }
 
 function getAllowedFormations(factionItem, mapSize) {
-  if (!factionItem) {
-    return [];
-  }
-  if (mapSize !== "Small") {
-    return factionItem.formations;
-  }
-  const combinedArms = factionItem.formations.find((item) => item.name === "CombinedArms");
-  return combinedArms ? [combinedArms] : [];
+  return FACTION_RULES.getAllowedFormations(factionItem, mapSize);
 }
 
 function formatAdvantage(value) {
@@ -257,7 +232,7 @@ function replaceChildrenKeepScroll(container, ...children) {
 function renderStaticControls() {
   const languageOptions = LOCALES.map((locale) => ({
     value: locale,
-    label: I18N[locale].localeName || locale
+    label: I18N.messages[locale].localeName || locale
   }));
   const ecosystemOptions = [
     { value: "all", label: t("allEcosystems") },
@@ -312,17 +287,7 @@ function renderCheckboxes(container, values, labelGroup, selectedSet, name, incl
 }
 
 function filteredMaps() {
-  const keyword = state.mapSearch.trim().toLowerCase();
-  return MAPS.filter((map) => {
-    const matchSearch =
-      !keyword ||
-      map.name.toLowerCase().includes(keyword) ||
-      mapLabel(map).toLowerCase().includes(keyword) ||
-      map.modes.some((item) => item.modeName.toLowerCase().includes(keyword));
-    const matchEcosystem = state.ecosystemFilter === "all" || map.ecosystem === state.ecosystemFilter;
-    const matchType = state.mapTypeFilter === "all" || map.mapType === state.mapTypeFilter;
-    return matchSearch && matchEcosystem && matchType;
-  });
+  return MAP_RULES.filterMaps(MAPS, state, { mapLabel });
 }
 
 function ensureSelectedMapIsVisible(maps) {
@@ -703,7 +668,7 @@ function resetCommandState() {
 
 function bindEvents() {
   elements.languageSelect.addEventListener("change", (event) => {
-    state.locale = event.target.value;
+    state.locale = i18nRuntime.setLocale(event.target.value);
     applyLocale();
     renderStaticControls();
     updateCommandView();

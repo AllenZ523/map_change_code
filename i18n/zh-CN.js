@@ -1,0 +1,119 @@
+"use strict";
+
+(() => {
+const MAP_LABELS = Object.fromEntries(window.SQUAD_MAP_DATA.maps.map((map) => [map.id, map.name]));
+
+const COUNTRY_LABELS_ZH = {
+  USA: "美国陆军",
+  USMC: "美国海军陆战队",
+  RGF: "俄罗斯陆军",
+  VDV: "俄罗斯空降军",
+  PLA: "中国人民解放军陆军",
+  PLAAGF: "中国人民解放军两栖地面部队",
+  PLANMC: "中国人民解放军海军陆战队",
+  ADF: "澳大利亚国防军",
+  BAF: "英国陆军",
+  CAF: "加拿大武装部队",
+  IMF: "非正规民兵",
+  MEI: "中东联盟",
+  GFI: "全球叛军",
+  TLF: "土耳其陆军",
+  CRF: "加拿大叛军",
+  WPMC: "西方私营军事公司"
+};
+
+const FORMATION_LABELS_ZH = {
+  CombinedArms: "合成化",
+  Armored: "装甲",
+  AirAssault: "空中突击",
+  LightInfantry: "轻步兵",
+  Motorized: "摩托化",
+  Mechanized: "机械化",
+  Support: "支援",
+  AmphibiousAssault: "两栖突击"
+};
+
+const ZH_CN = {
+  localeName: "中文",
+  appTitle: "Squad Map Manager WebUI",
+  ui: {
+    mainTitle: "地图预设GUI管理器",
+    author: "作者",
+    reset: "重置",
+    commandView: "编辑代码",
+    poolView: "随机图池",
+    metrics: "数据概览",
+    mapsMetric: "地图",
+    layersMetric: "图层",
+    factionsMetric: "阵营",
+    mapSection: "地图",
+    search: "搜索",
+    searchPlaceholder: "Map / Layer",
+    ecosystem: "生态",
+    type: "类型",
+    operation: "操作",
+    preset: "预设",
+    changeLayer: "换图",
+    mode: "模式",
+    matchup: "阵营与编制",
+    allowCivilWar: "允许内战",
+    force1: "阵营 1",
+    force2: "阵营 2",
+    faction: "阵营",
+    formation: "编制",
+    command: "命令",
+    copyCommand: "复制命令",
+    poolStrategy: "图池策略",
+    difficulty: "难度",
+    size: "大小",
+    balanceThreshold: "平衡阈值",
+    generateCount: "生成数量",
+    generatePool: "生成图池",
+    copyAll: "复制全部",
+    results: "结果",
+    language: "语言",
+    allEcosystems: "全部生态",
+    allTypes: "全部类型",
+    mapCount: "{count} 张",
+    layerCount: "{count} 个图层",
+    layerTag: "{count} 图层",
+    validOptions: "{count} 个可选",
+    candidateCount: "{count} 个组合",
+    resultCount: "{count} 条",
+    emptyMaps: "没有匹配的地图",
+    invalidCommand: "无法生成命令：当前选择缺少有效阵营或编制。",
+    balanceEmpty: "平衡值 -",
+    balanceValue: "平衡值 {value}",
+    balancePlain: "平衡",
+    faction1Advantage: "阵营1 +{value}",
+    faction2Advantage: "阵营2 +{value}",
+    faction1TooStrong: "阵营1优势过大",
+    faction2TooStrong: "阵营2优势过大",
+    balanceChip: "平衡 {value}",
+    balanceSuffix: "平衡值: {value}",
+    poolEmpty: "尚未生成图池",
+    noCombinations: "没有符合条件的组合",
+    generated: "已生成 {count} 条命令",
+    nothingToCopy: "没有可复制的内容",
+    copied: "已复制",
+    copyFailed: "复制失败",
+    resetDone: "已重置"
+  },
+  ecosystems: window.SQUAD_CONFIG_CORE.labels.ecosystems,
+  mapTypes: window.SQUAD_CONFIG_CORE.labels.mapTypes,
+  difficulties: window.SQUAD_CONFIG_CORE.labels.difficulties,
+  sizes: window.SQUAD_CONFIG_CORE.labels.sizes,
+  modeTypes: window.SQUAD_CONFIG_CORE.labels.modeTypes,
+  alliances: {
+    NATO: "北约",
+    Russia: "俄罗斯",
+    China: "中国",
+    Independent: "独立阵营"
+  },
+  maps: MAP_LABELS,
+  countries: COUNTRY_LABELS_ZH,
+  formations: FORMATION_LABELS_ZH
+};
+
+  window.SQUAD_I18N_ZH_CN = Object.freeze(ZH_CN);
+})();
