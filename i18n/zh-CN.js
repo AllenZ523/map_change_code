@@ -19,7 +19,8 @@ const COUNTRY_LABELS_ZH = {
   GFI: "全球叛军",
   TLF: "土耳其陆军",
   CRF: "加拿大叛军",
-  WPMC: "西方私营军事公司"
+  WPMC: "西方私营军事公司",
+  AFU: "乌克兰武装力量"
 };
 
 const FORMATION_LABELS_ZH = {

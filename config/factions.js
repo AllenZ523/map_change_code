@@ -119,6 +119,14 @@ const COUNTRIES = [
     formation("CombinedArms", 5),
     formation("AirAssault", 10),
     formation("LightInfantry", 5)
+  ]),
+  country("AFU", "Independent", ["CentralAsia", "MiddleEast", "EasternEurope", "NorthAmerica", "Asia", "NorthernEurope"], [
+    formation("CombinedArms", 0),
+    formation("Armored", 20),
+    formation("LightInfantry", -20),
+    formation("Motorized", 15),
+    formation("Mechanized", 10),
+    formation("Support", -30)
   ])
 ];
 

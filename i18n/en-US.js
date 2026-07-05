@@ -19,7 +19,8 @@ const COUNTRY_LABELS_EN = {
   GFI: "Global Insurgent Forces",
   TLF: "Turkish Land Forces",
   CRF: "Canadian Rebel Forces",
-  WPMC: "Western Private Military Contractors"
+  WPMC: "Western Private Military Contractors",
+  AFU: "Armed Forces of Ukraine"
 };
 
 const FORMATION_LABELS_EN = {
