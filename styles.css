@@ -203,6 +203,12 @@ h3 {
   box-shadow: 0 1px 8px rgba(23, 54, 41, 0.1);
 }
 
+.segment.is-warning {
+  background: #fff3df;
+  color: #854500;
+  box-shadow: 0 0 0 1px rgba(184, 107, 24, 0.28), 0 8px 18px rgba(184, 107, 24, 0.14);
+}
+
 .metric-band {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -426,6 +432,23 @@ select:focus {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 4px;
+}
+
+.operation-hint {
+  display: none;
+  margin-top: 10px;
+  border: 1px solid rgba(184, 107, 24, 0.34);
+  border-radius: 6px;
+  background: #fff3df;
+  color: #854500;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.45;
+  padding: 8px 10px;
+}
+
+.operation-hint.is-visible {
+  display: block;
 }
 
 .matchup-grid {

@@ -63,6 +63,7 @@ const elements = {
   mapList: $("mapList"),
   selectedMapMeta: $("selectedMapMeta"),
   operationControl: $("operationControl"),
+  changeLayerHint: $("changeLayerHint"),
   modeCountLabel: $("modeCountLabel"),
   modeList: $("modeList"),
   allowCivilWarToggle: $("allowCivilWarToggle"),
@@ -482,9 +483,13 @@ function updateCommandView() {
 }
 
 function updateOperationControl() {
+  const isChangeLayer = state.operation === "AdminChangeLayer";
   elements.operationControl.querySelectorAll(".segment").forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.operation === state.operation);
+    const isActive = button.dataset.operation === state.operation;
+    button.classList.toggle("is-active", isActive);
+    button.classList.toggle("is-warning", isActive && isChangeLayer);
   });
+  elements.changeLayerHint.classList.toggle("is-visible", isChangeLayer);
 }
 
 function collectChecked(container) {

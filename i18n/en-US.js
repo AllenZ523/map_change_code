@@ -55,6 +55,7 @@ const EN_US = {
     operation: "Operation",
     preset: "Set Next",
     changeLayer: "Change Layer",
+    changeLayerHint: "Change Layer switches the current map immediately. Confirm before copying or running it.",
     mode: "Mode",
     matchup: "Faction & Formation",
     allowCivilWar: "Allow Civil War",

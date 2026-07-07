@@ -55,6 +55,7 @@ const ZH_CN = {
     operation: "操作",
     preset: "预设",
     changeLayer: "换图",
+    changeLayerHint: "换图命令会立即切换当前地图，请确认后再复制或执行。",
     mode: "模式",
     matchup: "阵营与编制",
     allowCivilWar: "允许内战",
