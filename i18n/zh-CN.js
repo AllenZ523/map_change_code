@@ -15,12 +15,12 @@ const COUNTRY_LABELS_ZH = {
   BAF: "英国陆军",
   CAF: "加拿大武装部队",
   IMF: "非正规民兵",
-  MEI: "中东联盟",
-  GFI: "全球叛军",
+  MEI: "中东叛军",
+  GFI: "伊朗陆军",
   TLF: "土耳其陆军",
   CRF: "加拿大叛军",
   WPMC: "西方私营军事公司",
-  AFU: "乌克兰武装力量"
+  AFU: "乌克兰武装部队"
 };
 
 const FORMATION_LABELS_ZH = {
