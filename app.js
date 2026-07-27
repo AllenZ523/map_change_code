@@ -280,6 +280,9 @@ function renderCheckboxes(container, values, labelGroup, selectedSet, name, incl
     const displayLabel = labelFrom(labelGroup, value);
     span.textContent = includeCode ? value : displayLabel;
     span.title = includeCode ? displayLabel : "";
+    if (labelGroup === "difficulties") {
+      span.classList.add(`difficulty-${value.toLowerCase()}`);
+    }
 
     label.append(input, span);
     fragment.appendChild(label);
@@ -359,7 +362,7 @@ function renderModeList(map) {
     meta.append(
       chip(modeTypeLabel(item.modetype), "accent"),
       chip(labelFrom("sizes", item.mapSize)),
-      chip(labelFrom("difficulties", item.difficulty), item.difficulty === "Hard" ? "danger" : ""),
+      chip(labelFrom("difficulties", item.difficulty), `difficulty-${item.difficulty.toLowerCase()}`),
       chip(formatAdvantage(item.faction1Advantage))
     );
 

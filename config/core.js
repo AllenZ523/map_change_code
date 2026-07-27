@@ -18,7 +18,7 @@ const MAP_TYPE_LABELS = {
 
 const DIFFICULTY_LABELS = {
   Easy: "简单",
-  Medium: "中等",
+  Medium: "进阶",
   Hard: "困难"
 };
 
