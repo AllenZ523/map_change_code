@@ -25,20 +25,6 @@
 
 > 浏览器如果限制本地页面访问剪贴板，程序会自动尝试使用兼容的复制方式。
 
-### 使用独立窗口运行
-
-Windows 用户可以通过 Microsoft Edge WebView2 Runtime 或 Microsoft Edge 以应用窗口模式启动：
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\webview\launch-webview.ps1
-```
-
-只检查将要使用的浏览器程序和启动参数，不真正启动窗口：
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\webview\launch-webview.ps1 -DryRun
-```
-
 ### 构建单文件版本
 
 运行：
