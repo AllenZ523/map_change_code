@@ -2,7 +2,7 @@
 
 一款面向《战术小队》（Squad）服务器管理的离线地图预设命令生成器。通过图形界面选择地图、图层、阵营与编制，生成可直接复制的 `AdminSetNextLayer` 或 `AdminChangeLayer` 命令；也可以按难度、地图大小、模式和平衡阈值随机生成图池。
 
-当前界面版本：**v3.1**  
+当前界面版本：**v3.2**  
 作者：**[POST]MirageStar**
 
 ## 功能
@@ -72,7 +72,7 @@ AdminChangeLayer  <Layer> <Faction1>+<Formation1> <Faction2>+<Formation2>
 
 切换到“随机图池”页签后，可以设置：
 
-- 图层难度：简单、中等、困难
+- 图层难度：简单、进阶、困难
 - 地图大小：小型、中型、大型
 - 游戏模式：AAS、RAAS、INV、INS、DES、SKR、TC、SEED
 - 平衡阈值：仅保留平衡值绝对值不超过阈值的组合
